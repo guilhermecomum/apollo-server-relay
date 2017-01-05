@@ -4,6 +4,7 @@
   "description": "Minimal set of code to write a GraphQL server with Apollo graphql-tools",
   "scripts": {
     "start": "nodemon ./server.js --exec babel-node",
+    "update-schema": "babel-node utils/updateSchema.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ."
   },
@@ -26,15 +27,26 @@
   },
   "homepage": "https://github.com/apollostack/apollo-starter-kit#readme",
   "dependencies": {
+    "babel-loader": "^6.2.10",
+    "babel-relay-plugin": "^0.10.0",
     "body-parser": "^1.15.2",
     "cors": "^2.8.0",
     "express": "4.14.0",
     "graphql": "^0.8.1",
+    "graphql-relay": "^0.4.4",
     "graphql-server-express": "^0.4.2",
     "graphql-subscriptions": "^0.2.0",
     "graphql-tools": "^0.8.0",
+    "html-webpack-plugin": "^2.26.0",
     "lodash": "^4.15.0",
-    "subscriptions-transport-ws": "^0.3.1"
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "react-relay": "^0.10.0",
+    "subscriptions-transport-ws": "^0.3.1",
+    "webpack": "^1.14.0",
+    "webpack-dev-middleware": "^1.9.0",
+    "webpack-dev-server": "^1.16.2",
+    "webpack-hot-middleware": "^2.15.0"
   },
   "devDependencies": {
     "babel-cli": "6.16.0",
