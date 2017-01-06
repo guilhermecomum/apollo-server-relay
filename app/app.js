@@ -19,7 +19,7 @@ setRelayNetworkLayer();
 
 export function routeQuery() {
   return {
-    viewer: () => Relay.QL`query { posts }`,
+    viewer: () => Relay.QL`query { viewer }`,
   };
 }
 
