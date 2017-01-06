@@ -10,7 +10,7 @@ import path from 'path';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
-import webpackConfig from './config/webpack.config';
+import webpackConfig from './config/webpack.dev';
 import WebpackDevServer from 'webpack-dev-server';
 
 import schema from './data/schema';
@@ -21,7 +21,7 @@ const app = express().use('*', cors());
 const compiler = webpack(webpackConfig);
 const middleware = webpackDevMiddleware(compiler, {
   noInfo: true,
-  publicPath: '/',
+  publicPath: webpackConfig.output.publicPath,
   silent: true,
   stats: 'errors-only',
 });
@@ -44,7 +44,7 @@ app.use(middleware);
 app.use(webpackHotMiddleware(compiler));
 
 app.get('*', (req, res) => {
-  const indexFilePath = path.join('./app/', 'index.html');
+  const indexFilePath = path.join(compiler.outputPath, 'index.html');
   middleware.fileSystem.readFile(indexFilePath, (err, file) => {
     if (err) {
       res.sendStatus(404);

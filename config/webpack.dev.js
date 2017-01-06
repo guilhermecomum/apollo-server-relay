@@ -1,35 +1,22 @@
+import path from 'path';
 import fs from 'fs';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
-const path = require('path');
-
-module.exports = {
+module.exports = require('./webpack.base')({
+  // Add hot reloading in development
   entry: [
     'webpack-hot-middleware/client',
-    path.join(process.cwd(), 'app/app.js'),
+    path.join(process.cwd(), 'app/app.js'), // Start with js/app.js
   ],
 
+  // Don't use hashes in dev mode for better performance
   output: {
-    path: path.resolve(process.cwd(), 'build'),
-    publicPath: '/',
     filename: '[name].js',
     chunkFilename: '[name].chunk.js',
   },
 
-  module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        loader: 'babel',
-        exclude: /node_modules/,
-        query: {
-          plugins: [path.resolve(process.cwd(), 'config', 'relay', 'babelRelayPlugin')],
-        }
-      }
-    ]
-  },
-
+  // Add development plugins
   plugins: [
     new webpack.HotModuleReplacementPlugin(), // Tell webpack we want hot reloading
     new webpack.NoErrorsPlugin(),
@@ -39,22 +26,17 @@ module.exports = {
     }),
   ],
 
-  resolve: {
-    modules: ['app', 'node_modules'],
-    extensions: [
-      '',
-      '.js',
-    ],
-    packageMains: [
-      'main',
-    ],
+  // Tell babel that we want to hot-reload
+  babelQuery: {
+    // TODO fix hmre (probably wait until hot reloader v3 is out)
+    // presets: ['react-hmre'],
+    // Load the babel relay plugin and initialize it with the GraphQL schema
+    plugins: [path.resolve(process.cwd(), 'config', 'relay', 'babelRelayPlugin')],
   },
 
+  // Emit a source map for easier debugging
   devtool: 'cheap-module-eval-source-map',
-  target: 'web', // Make web variables accessible to webpack, e.g. window
-  stats: false, // Don't show stats in the console
-  progress: true,
-};
+});
 
 function templateContent() {
   return fs.readFileSync(
